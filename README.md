@@ -64,3 +64,8 @@ poe start
 ```
 
 and test the new endpoints by opening `http://127.0.0.1:8000/docs`.
+
+Suggestions:
+
+- for a negative test, try `Do birds have wings?`
+- for a positive test, try `Do Odonata have wings?`
