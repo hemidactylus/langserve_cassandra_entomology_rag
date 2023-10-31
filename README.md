@@ -1,7 +1,7 @@
-# RAG LangServe chain template
+# RAG LangChain template with Cassandra
 
 A basic chain template showing the RAG pattern using
-a vector store on Astra DB / Apache Cassandra®.
+a vector store on (CQL) Astra DB / Apache Cassandra®.
 
 ## Setup:
 
@@ -17,55 +17,40 @@ You need to provide the connection parameters and secrets through environment va
 
 ## Running the chain
 
-### Populate the vector store
+### Within a LangChain app
 
-For a standalone usage (i.e. outside of LangServe), first clone this repo
-and then, in its root directory:
-
-Make sure you have the environment variables all set (see previous section),
-then, from this directory, launch the following just once:
+Assuming you have already created the app (i.e. `langchain app new MyApp; cd MyApp`), this is what you'll need:
 
 ```
-poetry env use /usr/bin/python3.11    # adjust to your system
-poetry install
-poetry run python setup.py 
+langchain app add --repo "hemidactylus/langserve_cassandra_entomology_rag" --branch main
 ```
 
-The output will be something like `Done (29 lines inserted).`.
+*Important*: adjust the project's `server.py` as instructed in the output of the above.
 
-> **Note**: In a full application, the vector store might be populated in other ways:
-> this step is to pre-populate the vector store with some rows for the
-> demo RAG chains to sensibly work.
-
-
-### Run the chain test
-
-The environment has already been set up in the previous section:
-to test the chain, simply run:
+Now, make sure all required environment variables are set, and run
 
 ```
-poetry run python main.py 
+langchain serve
 ```
 
-## Adding to LangServe
-
-To add this chain to your LangServe app,
-
-```
-poe add --repo=hemidactylus/langserve_cassandra_entomology_rag
-```
-
-(you may need to prepend `poetry run` to `poe` commands).
-
-Then, after setting the environment variables as specified for the standalone usage above, you can start LangServe:
-
-```
-poe start
-```
-
-and test the new endpoints by opening `http://127.0.0.1:8000/docs`.
+that's it. You can now test the new endpoints by opening `http://127.0.0.1:8000/docs`, or visiting directly `http://127.0.0.1:8000/cassandra_entomology_rag/playground/`.
 
 Suggestions:
 
 - for a negative test, try `Do birds have wings?`
 - for a positive test, try `Do Odonata have wings?`
+
+
+### Stand-alone
+
+For a standalone usage (outside of `langchain serve`), clone this repo,
+`cd` to its root directory, ensure you set all environment variables,
+then launch:
+
+```
+poetry install
+poetry run python main.py
+```
+
+> **Note**: In a full application, the vector store might be populated in other ways than what done here.
+> The populate step here is done for the demo RAG chains to sensibly work.

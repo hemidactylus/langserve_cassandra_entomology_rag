@@ -37,6 +37,13 @@ vector_store = Cassandra(
 )
 retriever = vector_store.as_retriever(search_kwargs={'k': 3})
 
+# For demo reasons, let's ensure there are rows on the vector store.
+# Please remove this and/or adapt to your use case!
+from .populate_vector_store import populate
+inserted_lines = populate(vector_store)
+if inserted_lines:
+    print(f"Done ({inserted_lines} lines inserted).")
+
 entomology_template = """
 You are an expert entomologist, tasked with answering enthusiast biologists' questions.
 You must answer based only on the provided context, do not make up any fact.
